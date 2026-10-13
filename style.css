@@ -34,7 +34,7 @@
     font-display: swap;
 }
 
-/* ==================== Tokens del diseño (RUNN) ==================== */
+/* ==================== Variables ==================== */
 :root {
     --bg: oklch(0.12 0 0);
     --bg-panel: oklch(0.18 0 0);
@@ -50,6 +50,18 @@
     --danger-text: #ff0000;
     --mono: ui-monospace, monospace;
     --sans: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+
+    /* Tamaños de texto */
+    --fs-xs: 11px;
+    --fs-sm: 12px;
+    --fs-base: 13px;
+    --fs-md: 14px;
+    --fs-lg: 15px;
+    --fs-xl: 16px;
+
+
+    --map-gap: 16px;
+    --fab-size: 40px;
 }
 
 /* ==================== Reset ==================== */
@@ -154,6 +166,7 @@ h6 {
 }
 
 #map-wrapper {
+    position: relative;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -162,6 +175,9 @@ h6 {
 
 #map {
     flex: 1;
+    /* Encierra los z-index internos de Leaflet (hasta 1000) para que no compitan con los del resto de la app */
+    position: relative;
+    z-index: 0;
 }
 
 .numbered-marker {
@@ -171,7 +187,7 @@ h6 {
     cursor: grab;
 }
 
-/* El span interior lleva el estilo visual y es el que se escala con hover */
+
 .marker-number {
     width: 100%;
     height: 100%;
@@ -183,7 +199,7 @@ h6 {
     color: var(--text);
     font-family: var(--mono);
     font-weight: 700;
-    font-size: 12px;
+    font-size: var(--fs-sm);
     line-height: 1;
     transition: transform 0.1s ease;
 }
@@ -215,14 +231,14 @@ h6 {
 }
 
 .app-title {
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 800;
     letter-spacing: 0.06em;
     color: var(--text);
 }
 
 .section-label {
-    font-size: 11.5px;
+    font-size: 12.5px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -257,14 +273,14 @@ h6 {
 }
 
 .stat-label {
-    font-size: 10px;
+    font-size: var(--fs-xs);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--text-faint);
 }
 
 .stat-value {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     font-family: ui-monospace, monospace;
     overflow: hidden;
@@ -308,7 +324,7 @@ h6 {
     border: 1px solid var(--border);
     color: var(--text);
     padding: 8px 28px 8px 34px;
-    font-size: 13px;
+    font-size: var(--fs-md);
 }
 
 .search-clear {
@@ -320,7 +336,7 @@ h6 {
     background: none;
     color: var(--text-dim);
     cursor: pointer;
-    font-size: 13px;
+    font-size: var(--fs-md);
     line-height: 1;
     padding: 4px;
 }
@@ -352,9 +368,6 @@ h6 {
     overflow-y: auto;
     background: var(--bg-panel);
     border: 1px solid var(--border-strong);
-    /* Sin esto el desplegable se confunde con el fondo del propio sidebar
-    (casi el mismo negro) y lo que tapa debajo (Estadísticas) parece haber
-    desaparecido en vez de estar cubierto por una capa flotando encima */
     box-shadow: 0 8px 24px oklch(0 0 0 / 0.5);
     list-style: none;
     margin: 0;
@@ -363,7 +376,7 @@ h6 {
 
 .search-result-item {
     padding: 8px 10px;
-    font-size: 13px;
+    font-size: var(--fs-md);
     color: var(--text);
     cursor: pointer;
 }
@@ -375,10 +388,9 @@ h6 {
 
 .search-result-empty {
     padding: 8px 10px;
-    font-size: 13px;
+    font-size: var(--fs-md);
     color: var(--text-faint);
 }
-
 
 .points-section {
     flex: 1;
@@ -407,7 +419,7 @@ h6 {
     color: var(--text-dim);
     width: 28px;
     height: 28px;
-    font-size: 13px;
+    font-size: var(--fs-md);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -481,12 +493,11 @@ h6 {
     height: 16px;
 }
 
-/* Botón de descargar GPX flotando en la esquina superior derecha del mapa,
-visible en escritorio; en móvil se resuelve aparte con .map-fab */
+/* Botón de descargar GPX flotando en la esquina superior derecha del mapa, visible en escritorio; en móvil se resuelve aparte con .download-btn-mobile */
 .map-corner-btn {
     position: absolute;
-    top: 16px;
-    right: 16px;
+    top: var(--map-gap);
+    right: var(--map-gap);
     width: 36px;
     height: 36px;
     display: flex;
@@ -496,7 +507,7 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
     border: 1px solid var(--border-strong);
     color: var(--text-dim);
     cursor: pointer;
-    z-index: 1000;
+    z-index: 50;
 }
 
 .map-corner-btn:hover:not(:disabled) {
@@ -519,7 +530,10 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
     transform: scale(calc(1 / 1.04));
 }
 
-/* Atajos flotantes sobre el mapa en móvil */
+.download-btn-mobile {
+    display: none;
+}
+
 .map-fab {
     display: none;
 }
@@ -599,7 +613,7 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
 
 .point-number {
     font-family: ui-monospace, monospace;
-    font-size: 14px;
+    font-size: var(--fs-lg);
     font-weight: 700;
     color: var(--accent);
     width: 26px;
@@ -608,7 +622,7 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
 
 .point-coords {
     font-family: ui-monospace, monospace;
-    font-size: 12.5px;
+    font-size: 13.5px;
     color: var(--text-dim);
     flex: 1;
 }
@@ -618,7 +632,7 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
     background: none;
     cursor: pointer;
     color: var(--text-faint);
-    font-size: 14px;
+    font-size: var(--fs-lg);
     line-height: 1;
     padding: 2px 4px;
 }
@@ -636,6 +650,69 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
     display: none;
 }
 
+/* ==================== Toasts ==================== */
+
+#toast-container {
+    position: absolute;
+    top: var(--map-gap);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: min(480px, calc(100% - 32px));
+    pointer-events: none;
+}
+
+.toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px 10px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: var(--fs-md);
+}
+
+.toast-text {
+    flex: 1;
+    text-wrap: balance;
+    padding-left: 20px;
+    text-align: center;
+}
+
+.toast-close {
+    flex: none;
+    background: none;
+    border: none;
+    color: inherit;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .toast {
+        animation: toast-in 0.2s ease-out;
+    }
+    @keyframes toast-in {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+    }
+}
+
 /* ==================== Mobile (bottom sheet) ==================== */
 
 .sheet-handle {
@@ -643,6 +720,25 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
 }
 
 @media (max-width: 768px) {
+    .section-label {
+        font-size: 11.5px;
+    }
+
+    .stat-label {
+        font-size: 10px;
+    }
+
+    .stat-value {
+        font-size: var(--fs-xl);
+    }
+
+    .search-input,
+    .search-clear,
+    .search-result-item,
+    .search-result-empty {
+        font-size: var(--fs-base);
+    }
+
     #container {
         position: relative;
         height: 100dvh;
@@ -667,10 +763,8 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
         box-shadow: 0 -8px 24px oklch(0 0 0 / 0.45);
         overflow: hidden;
         transition: height 0.25s ease;
-        /* Por encima del mapa y de sus controles de zoom */
-        z-index: 1000;
+        z-index: 50;
     }
-
 
     .sheet-handle {
         display: flex;
@@ -682,7 +776,7 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
         background: none;
         border: none;
         cursor: grab;
-        /* Evita que el navegador interprete el arrastre como scroll de página */
+
         touch-action: none;
         user-select: none;
         -webkit-touch-callout: none;
@@ -704,7 +798,6 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
         display: none;
     }
 
-    /* En móvil el hueco de descarga se resuelve con .map-fab (aún por decidir cómo) */
     .map-corner-btn {
         display: none;
     }
@@ -720,11 +813,10 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
         pointer-events: none;
     }
 
-
     .icon-btn {
         width: 32px;
         height: 32px;
-        font-size: 14px;
+        font-size: var(--fs-md);
     }
 
     .point-item {
@@ -733,50 +825,85 @@ visible en escritorio; en móvil se resuelve aparte con .map-fab */
     }
 
     .point-number {
-        font-size: 13px;
+        font-size: var(--fs-base);
     }
 
     .point-coords {
-        font-size: 14px;
+        font-size: var(--fs-md);
     }
 
     .delete-btn {
-        font-size: 16px;
+        font-size: var(--fs-xl);
         padding: 6px 8px;
     }
 
-    /* Atajos flotantes en las esquinas superiores del mapa, sin tener que abrir la hoja */
+    #btn-undo-point {
+        display: none;
+    }
+
+
     .map-fab {
         display: flex;
         align-items: center;
         justify-content: center;
         position: absolute;
-        top: calc(env(safe-area-inset-top, 0px) + 16px);
-        width: 40px;
-        height: 40px;
+        top: calc(env(safe-area-inset-top, 0px) + var(--map-gap));
+        width: var(--fab-size);
+        height: var(--fab-size);
         border: 1px solid var(--border-strong);
         background: var(--bg-panel);
         color: var(--text-dim);
-        font-size: 16px;
+        font-size: var(--fs-xl);
         line-height: 1;
         padding: 0;
         cursor: pointer;
-        z-index: 1000;
-    }
-
-    #btn-clear-route-fab {
-        left: 16px;
-        color: var(--danger-text);
+        z-index: 50;
     }
 
     #btn-undo-point-fab {
-        left: 16px;
-        /* Debajo del de limpiar ruta: 40px de alto + 10px de separación */
-        top: calc(env(safe-area-inset-top, 0px) + 16px + 40px + 10px);
+        right: var(--map-gap);
     }
 
-    /* A la derecha, separado del cluster de deshacer/limpiar */
-    #btn-download-gpx-fab {
-        right: 16px;
+    .download-btn-mobile {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px;
+        background: var(--bg-panel);
+        border: 1px solid var(--border-strong);
+        color: var(--text-dim);
+        font: inherit;
+        font-size: var(--fs-base);
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .download-btn-mobile:active {
+        border-color: var(--text);
+        color: var(--text);
+    }
+
+    .download-btn-mobile:disabled {
+        opacity: 0.35;
+        pointer-events: none;
+    }
+
+    #sidebar:not(.is-expanded) .download-btn-mobile {
+        display: none;
+    }
+
+
+    #toast-container {
+        top: calc(env(safe-area-inset-top, 0px) + var(--map-gap));
+        left: var(--map-gap);
+        right: var(--map-gap);
+        width: auto;
+        transform: none;
+    }
+
+    .toast {
+        font-size: var(--fs-sm);
     }
 }

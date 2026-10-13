@@ -3,6 +3,7 @@
 import { LATITUDE, LONGITUDE, ZOOM, MAXZOOM } from './config.js'
 import { state, routeLine } from './state.js'
 import { addPoint } from './points.js'
+import { showToast } from './toast.js'
 
 export function initMap() {
     //Renderizamos el mapa con Santiago de Compostela por defecto, sin esperar al permiso de geolocalización
@@ -19,7 +20,6 @@ function renderMap(lat, lon) {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(state.map)
 
-    //Quitamos el "Leaflet" del footer, ya que no aporta nada y ocupa espacio en móvil
     state.map.attributionControl.setPrefix(false)
 
     routeLine.addTo(state.map)
@@ -46,11 +46,10 @@ function showPosition(pos) {
 }
 
 function showErrorLocation(err) {
-    console.log(err)
-    // ESTO DEBERIA DE MEJORARLO ⚠️
-    if (err.code === 1) {
-        console.log('Porfavor activa la geolocalización!')
+    console.error(err)
+    if (err.code === err.PERMISSION_DENIED) {
+        showToast('Activa la geolocalización para centrar el mapa')
     } else {
-        console.log('No hemos podido encontrar tu localización')
+        showToast('No hemos podido encontrar tu localización')
     }
 }

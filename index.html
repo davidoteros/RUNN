@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +9,7 @@
         <script src="vendor/chart.umd.min.js"></script>
 
         <script type="module" src="js/main.js"></script>
-        <title>Runn</title>
+        <title>RUNN</title>
     </head>
     <body>
         <div id="container">
@@ -65,6 +65,13 @@
                                 <canvas id="graphic"></canvas>
                             </div>
                         </div>
+                        <button
+                            type="button"
+                            id="btn-download-gpx-mobile"
+                            class="download-btn-mobile"
+                        >
+                            Descargar ruta
+                        </button>
                     </div>
                 </div>
 
@@ -95,6 +102,7 @@
             </aside>
             <main id="map-wrapper">
                 <div id="map"></div>
+                <div id="toast-container" aria-live="polite"></div>
                 <button
                     type="button"
                     id="btn-download-gpx"
@@ -104,25 +112,11 @@
                     <span class="icon-svg icon-svg-download"></span>
                 </button>
                 <button
-                    id="btn-clear-route-fab"
-                    class="map-fab map-fab-danger"
-                    title="Limpiar ruta"
-                >
-                    <span class="icon-svg icon-svg-x"></span>
-                </button>
-                <button
                     id="btn-undo-point-fab"
                     class="map-fab"
                     title="Deshacer última acción"
                 >
                     <span class="icon-svg icon-svg-undo"></span>
-                </button>
-                <button
-                    id="btn-download-gpx-fab"
-                    class="map-fab"
-                    title="Descargar ruta (GPX)"
-                >
-                    <span class="icon-svg icon-svg-download"></span>
                 </button>
             </main>
         </div>

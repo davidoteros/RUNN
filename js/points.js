@@ -11,7 +11,6 @@ let spanCounterPoints = document.getElementById('counter')
 
 let btnClearRoute = document.getElementById('btn-clear-route')
 let btnUndoPoint = document.getElementById('btn-undo-point')
-let btnClearRouteFab = document.getElementById('btn-clear-route-fab')
 let btnUndoPointFab = document.getElementById('btn-undo-point-fab')
 
 let pointDict = {}
@@ -135,8 +134,7 @@ export function initPointsEvents() {
     btnClearRoute.addEventListener('click', clearRoute)
     //Botón para deshacer: revierte la última acción realizada
     btnUndoPoint.addEventListener('click', undoLastAction)
-    //Mismos botones pero flotando sobre el mapa, para móvil
-    btnClearRouteFab.addEventListener('click', clearRoute)
+    //Botón de deshacer flotando sobre el mapa, para móvil
     btnUndoPointFab.addEventListener('click', undoLastAction)
 
     //Al arrancar no hay nada que deshacer

@@ -8,6 +8,7 @@ import {
     ZOOM,
 } from './config.js'
 import { state } from './state.js'
+import { showToast } from './toast.js'
 
 let searchInput = document.getElementById('search-place')
 let searchClearBtn = document.getElementById('search-clear')
@@ -69,6 +70,7 @@ async function fetchSearchResults(query) {
         //Si el error es por abort, es esperado (petición cancelada por una más reciente)
         if (error.name !== 'AbortError') {
             console.error(error)
+            showToast('No se pudo completar la búsqueda')
         }
     }
 }

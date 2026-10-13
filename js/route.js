@@ -2,12 +2,13 @@
 
 import { state, routeLine } from './state.js'
 import { formatKm, triggerDownload } from './utils.js'
+import { showToast } from './toast.js'
 import { scheduleElevation, flushElevation, resetElevation } from './elevation.js'
 
 let spanCounterKm = document.getElementById('counter-km')
 
 let btnDownloadGpx = document.getElementById('btn-download-gpx')
-let btnDownloadGpxFab = document.getElementById('btn-download-gpx-fab')
+let btnDownloadGpxMobile = document.getElementById('btn-download-gpx-mobile')
 
 let routeRequestId = 0
 
@@ -15,7 +16,7 @@ export function initRouteEvents() {
     //Botón para descargar la ruta en formato GPX (importable en reloj/móvil)
     btnDownloadGpx.addEventListener('click', downloadGPX)
     //Mismo botón flotando sobre el mapa, para móvil
-    btnDownloadGpxFab.addEventListener('click', downloadGPX)
+    btnDownloadGpxMobile.addEventListener('click', downloadGPX)
 
     updateDownloadButtonState()
 }
@@ -24,7 +25,7 @@ export function initRouteEvents() {
 export function updateDownloadButtonState() {
     let disabled = state.routeGeometry.length < 2
     btnDownloadGpx.disabled = disabled
-    btnDownloadGpxFab.disabled = disabled
+    btnDownloadGpxMobile.disabled = disabled
 }
 
 //Pide la ruta a OSRM y la aplica. Recibe las coordenadas ya calculadas —
@@ -46,8 +47,11 @@ export async function fetchRoute(coords) {
         applyRoute(routeCoords, distance)
     } catch (error) {
         console.error(error)
-        // Futura función a implementar que muestre el error al usuario
-        //showError("No se pudo calcular la ruta")
+        if (error.status === 429) {
+            showToast('Demasiadas peticiones. Espera unos segundos')
+        } else {
+            showToast('No se pudo calcular la ruta')
+        }
     }
 }
 

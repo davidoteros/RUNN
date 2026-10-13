@@ -14,6 +14,7 @@ import {
     CHART_SMOOTH_PASSES,
 } from './config.js'
 import { haversine } from './utils.js'
+import { showToast } from './toast.js'
 import { state } from './state.js'
 import { updateElevationChart, resetChart } from './elevationChart.js'
 
@@ -62,8 +63,7 @@ async function calculateElevation() {
         }
     } catch (error) {
         console.error(error)
-        // Futura función a implementar que muestre el error al usuario
-        //showError("No se pudo calcular la elevación")
+        showToast('No se pudo calcular la elevación')
     }
 }
 

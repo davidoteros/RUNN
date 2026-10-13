@@ -40,7 +40,6 @@ Y abrir `http://localhost:8000` en el navegador.
 
 ## Próximas mejoras
 
-- Sistema de notificaciones/toast para dar feedback más claro de las acciones.
 - Mostrar el nombre de la calle en la lista de puntos en lugar de las coordenadas.
 - Rediseño de la interfaz en móvil para mejorar la usabilidad.
 
