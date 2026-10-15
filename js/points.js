@@ -3,6 +3,7 @@
 import { ICONSIZE, ICONANCHOR } from './config.js'
 import { state } from './state.js'
 import { fetchRoute, resetRouteGeometry } from './route.js'
+import { savePointsLS, loadPointsLS, clearPointsLS } from './storage.js'
 
 let pointList = document.getElementById('point-list')
 let pointItems = pointList.getElementsByTagName('li')
@@ -93,7 +94,7 @@ function restoreMarkerPosition({ id, from }) {
 
     marker.setLatLng(from)
     updateLi(id, from.lat, from.lng)
-    fetchRoute(getRouteCoords())
+    refreshRoute()
 }
 
 //Reordena la lista según el orden de ids indicado
@@ -141,9 +142,8 @@ export function initPointsEvents() {
     updateUndoButtonState()
 }
 
-//Se llama desde map.js al hacer click en el mapa
-//Añadir un punto: marker + li + recalcular ruta
-export function addPoint(lat, lng) {
+//Monta marker + li + contador
+function createPoint(lat, lng) {
     let pointNumber = Object.keys(pointDict).length + 1
 
     let marker = createPointMarker(lat, lng, pointNumber)
@@ -152,22 +152,39 @@ export function addPoint(lat, lng) {
     let li = createPointListItem(marker, pointNumber)
     pointList.appendChild(li)
 
-    pushUndoAction({ type: 'add', id: marker._leaflet_id })
-
-    //Recalculamos el contador de puntos
     updateSpanCounter(pointNumber)
 
-    //Calculamos la ruta
-    fetchRoute(getRouteCoords())
+    return marker
 }
 
-//Coordenadas de la ruta en el orden de la lista, formato [lng, lat] (lo que espera OSRM)
+export function addPoint(lat, lng) {
+    let marker = createPoint(lat, lng)
+    pushUndoAction({ type: 'add', id: marker._leaflet_id })
+    refreshRoute()
+}
+
+export function restoreSavedPoints() {
+    let saved = loadPointsLS()
+    if (saved.length === 0) return
+
+    saved.forEach(([lng, lat]) => createPoint(lat, lng))
+    refreshRoute()
+}
+
+//Coordenadas de la ruta en el orden de la lista, formato [lng, lat]
 function getRouteCoords() {
     return Array.from(pointItems).map((li) => {
         let marker = pointDict[li.dataset.pointId]
         let { lat, lng } = marker.getLatLng()
         return [lng, lat]
     })
+}
+
+//Cada vez que cambian los puntos: guardamos en localStorage y recalculamos la ruta
+function refreshRoute() {
+    let coords = getRouteCoords()
+    savePointsLS(coords)
+    fetchRoute(coords)
 }
 
 //Creamos el marker numerado y lo guardamos en pointDict
@@ -211,7 +228,7 @@ function wireMarkerEvents(marker) {
             })
         }
 
-        fetchRoute(getRouteCoords())
+        refreshRoute()
         updateLi(marker._leaflet_id, position.lat, position.lng)
     })
 
@@ -367,7 +384,7 @@ function recalculatePoints() {
 //Tras borrar un punto o reordenar la lista: renumera y vuelve a pedir la ruta
 function syncPointsAndRoute() {
     recalculatePoints()
-    fetchRoute(getRouteCoords())
+    refreshRoute()
 }
 
 //Borrar ruta: puntos + geometría/elevación
@@ -381,6 +398,7 @@ function clearRoute() {
     undoStack = []
     updateUndoButtonState()
 
+    clearPointsLS()
     resetRouteGeometry()
 }
 

@@ -219,7 +219,6 @@ async function fetchElevation(points) {
     let { minLat, maxLat, minLng, maxLng } = calculateBoundingBox(points)
 
     let resolution = pickElevationResolution(minLat, maxLat, minLng, maxLng)
-    console.log(`Elevación: usando malla de ${resolution}m`)
 
     const response = await fetch(
         `https://servicios.idee.es/wcs-inspire/mdt?service=WCS&version=2.0.1&request=GetCoverage&coverageId=Elevacion4258_${resolution}&subset=lat(${minLat},${maxLat})&subset=long(${minLng},${maxLng})&format=application/asc`,
