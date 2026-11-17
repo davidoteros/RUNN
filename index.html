@@ -24,6 +24,15 @@
                 ></div>
                 <div class="sidebar-header">
                     <h2 class="app-title">RUNN</h2>
+                    <button
+                        type="button"
+                        class="icon-btn help-btn"
+                        data-open-help
+                        title="Cómo funciona"
+                        aria-label="Cómo funciona"
+                    >
+                        ?
+                    </button>
                 </div>
 
                 <div class="search-section">
@@ -112,6 +121,16 @@
                     <span class="icon-svg icon-svg-download"></span>
                 </button>
                 <button
+                    type="button"
+                    id="btn-help-fab"
+                    class="map-fab help-btn"
+                    data-open-help
+                    title="Cómo funciona"
+                    aria-label="Cómo funciona"
+                >
+                    ?
+                </button>
+                <button
                     id="btn-undo-point-fab"
                     class="map-fab"
                     title="Deshacer última acción"
@@ -120,5 +139,57 @@
                 </button>
             </main>
         </div>
+
+        <dialog id="help-dialog" class="help-dialog" aria-labelledby="help-title">
+            <div class="help-header">
+                <h2 id="help-title" class="help-title">Cómo funciona</h2>
+                <form method="dialog">
+                    <button class="icon-btn" title="Cerrar" aria-label="Cerrar">
+                        <span class="icon-svg icon-svg-x"></span>
+                    </button>
+                </form>
+            </div>
+            <dl class="help-list">
+                <dt>Buscar</dt>
+                <dd>
+                    Escribe una dirección o un lugar y elige un resultado para
+                    centrar el mapa allí.
+                </dd>
+
+                <dt>Crear la ruta</dt>
+                <dd>
+                    Haz clic en el mapa para añadir un punto. La ruta se calcula
+                    sola siguiendo caminos a pie.
+                </dd>
+
+                <dt>Editar puntos</dt>
+                <dd>
+                    Arrastra un punto en el mapa para moverlo o haz clic derecho
+                    sobre él para borrarlo. En la lista también puedes borrarlo
+                    con la ×.
+                </dd>
+                <dd>
+                    Para cambiar el orden de los puntos, arrástralos dentro de la
+                    lista: la ruta se recalcula con el nuevo orden.
+                </dd>
+
+                <dt>Deshacer y limpiar</dt>
+                <dd>
+                    El botón de deshacer revierte la última acción: añadir, mover,
+                    borrar o reordenar. La × roja borra la ruta entera.
+                </dd>
+
+                <dt>Estadísticas</dt>
+                <dd>
+                    Distancia total y desnivel acumulado (subida/bajada). Pasa el
+                    ratón por el perfil de elevación para ver ese punto en el mapa.
+                </dd>
+
+                <dt>Exportar</dt>
+                <dd>
+                    Descarga la ruta en GPX para llevarla al reloj o a otra app.
+                </dd>
+            </dl>
+        </dialog>
     </body>
 </html>
