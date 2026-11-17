@@ -4,7 +4,7 @@ RUNN es una aplicación web para diseñar rutas de running de forma rápida: se 
 
 No requiere registro ni cuenta, no guarda datos en ningún servidor y es gratuita.
 
-**Demo:** [https://a24davidos.github.io/RUNN/](https://davidoteros.github.io/RUNN/)
+**Demo:** [Haz click aquí para probar la demo](https://davidoteros.github.io/RUNN/)
 
 ## Funcionalidades
 
