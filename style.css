@@ -204,6 +204,12 @@ h6 {
     transition: transform 0.1s ease;
 }
 
+.numbered-marker.is-last .marker-number {
+    background: var(--text);
+    border-color: var(--bg-panel);
+    color: var(--bg-panel);
+}
+
 .numbered-marker:hover .marker-number {
     transform: scale(1.2);
 }

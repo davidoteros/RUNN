@@ -153,6 +153,7 @@ function createPoint(lat, lng) {
     pointList.appendChild(li)
 
     updateSpanCounter(pointNumber)
+    updateLastMarker()
 
     return marker
 }
@@ -379,6 +380,16 @@ function recalculatePoints() {
 
     //Recalculamos el contador de puntos
     updateSpanCounter(arrPointItems.length)
+    updateLastMarker()
+}
+
+//Invierte los colores del último punto de la ruta
+function updateLastMarker() {
+    let items = Array.from(pointItems)
+    items.forEach((li, index) => {
+        let el = pointDict[li.dataset.pointId].getElement()
+        el.classList.toggle('is-last', index === items.length - 1)
+    })
 }
 
 //Tras borrar un punto o reordenar la lista: renumera y vuelve a pedir la ruta
