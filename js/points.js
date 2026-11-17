@@ -168,7 +168,7 @@ export function restoreSavedPoints() {
     if (saved.length === 0) return
 
     saved.forEach(([lng, lat]) => createPoint(lat, lng))
-    refreshRoute()
+    fetchRoute(getRouteCoords())
 }
 
 //Coordenadas de la ruta en el orden de la lista, formato [lng, lat]
